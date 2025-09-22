@@ -1,5 +1,5 @@
 {
-  "name": "code",
+  "name": "wellness-partners-voice-assistant",
   "version": "1.0.0",
   "main": "server.js",
   "directories": {
@@ -7,21 +7,54 @@
   },
   "scripts": {
     "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon server.js",
+    "test": "npm run test:rag",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:migrate:reset": "prisma migrate reset",
+    "db:seed": "node prisma/seed.js",
+    "db:studio": "prisma studio",
+    "db:setup": "npm run db:generate && npm run db:migrate && npm run db:seed",
+    "setup:rag": "node scripts/setup-rag.js",
+    "test:rag": "node scripts/test-rag.js",
+    "test:db": "node test-db.js",
+    "clean": "rm -rf node_modules package-lock.json && npm install",
+    "reset": "npm run db:migrate:reset && npm run db:seed && npm run setup:rag",
+    "check": "npm run test:db && npm run test:rag"
   },
   "type": "module",
-  "keywords": [],
+  "keywords": [
+    "voice-assistant",
+    "twilio",
+    "appointment-scheduling",
+    "rag",
+    "langchain"
+  ],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "RAG-powered voice appointment scheduling system for Wellness Partners clinic",
   "dependencies": {
     "@fastify/http-proxy": "^11.3.0",
     "@fastify/websocket": "^11.0.2",
     "@huggingface/inference": "^2.6.4",
+    "@langchain/community": "^0.0.34",
+    "@langchain/openai": "^0.0.14",
+    "@prisma/client": "^5.7.1",
+    "date-fns": "^3.2.0",
     "dotenv": "^16.4.7",
+    "faiss-node": "^0.5.1",
     "fastify": "^5.2.1",
+    "langchain": "^0.1.25",
+    "mammoth": "^1.6.0",
+    "node-cron": "^3.0.3",
     "openai": "^5.11.0",
+    "pdf-parse": "^1.1.1",
+    "tiktoken": "^1.0.10",
     "twilio": "^5.8.0",
-    "ws": "^8.18.3"
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "prisma": "^5.7.1"
   }
 }

@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Patient {
+  id           String   @id @default(cuid())
+  firstName    String
+  lastName     String
+  phone        String   @unique
+  email        String?
+  dateOfBirth  DateTime
+  isNewPatient Boolean  @default(true)
+  insuranceProvider String?
+  emergencyContact String?
+  notes        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  appointments Appointment[]
+  
+  @@map("patients")
+}
+
+model Provider {
+  id          String   @id @default(cuid())
+  firstName   String
+  lastName    String
+  title       String   // Dr., NP, PA, etc.
+  specialty   String
+  phoneExt    String?
+  email       String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  workingHours WorkingHours[]
+  appointments Appointment[]
+  
+  @@map("providers")
+}
+
+model WorkingHours {
+  id         String @id @default(cuid())
+  providerId String
+  dayOfWeek  Int    // 0-6 (Sunday-Saturday)
+  startTime  String // "09:00"
+  endTime    String // "17:00"
+  isActive   Boolean @default(true)
+  
+  provider   Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  
+  @@unique([providerId, dayOfWeek])
+  @@map("working_hours")
+}
+
+model Appointment {
+  id              String            @id @default(cuid())
+  patientId       String
+  providerId      String
+  appointmentType AppointmentType
+  dateTime        DateTime
+  duration        Int               // minutes
+  status          AppointmentStatus @default(SCHEDULED)
+  reasonForVisit  String?
+  notes           String?
+  confirmationCode String?          @unique
+  reminderSent    Boolean           @default(false)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  
+  patient         Patient           @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  provider        Provider          @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  
+  @@map("appointments")
+}
+
+model ConversationLog {
+  id           String   @id @default(cuid())
+  callSid      String
+  userInput    String
+  aiResponse   String
+  intent       String?  // scheduling, rescheduling, cancellation, etc.
+  extractedData Json?   // structured data extracted from conversation
+  sessionStep  String?  // which step in the conversation flow
+  timestamp    DateTime @default(now())
+  
+  @@map("conversation_logs")
+}
+
+enum AppointmentType {
+  NEW_PATIENT
+  FOLLOW_UP
+  URGENT_CARE
+  CONSULTATION
+  PROCEDURE
+  WELLNESS_CHECK
+  TELEHEALTH
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  CONFIRMED
+  CHECKED_IN
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+  RESCHEDULED
+}
