@@ -1,0 +1,30 @@
+
+
+Document Loader
+    use the MultiFileLoader  for load the different files in the Data : 
+    reference : https://js.langchain.com/docs/integrations/document_loaders/file_loaders/multi_file/
+
+Vector Store - Optional
+    Instead of use Faiss Vector Store explore differents Vector store to improve the performace  ,for save the vector data  into various place
+    reference : https://js.langchain.com/docs/integrations/vectorstores/
+
+Retriver : 
+    Explore the various type of retriver try to campare the result and choose the best one . you used the similarity retriever that is simple 
+    try with different retriver to get better result . try with this MMR (Max Marginal Relevance) Retriever , MultiQueryRetriever
+    reference : https://js.langchain.com/docs/integrations/retrievers/
+
+
+embedding Model :
+    Try with different embeding model like "text-embedding-3-large" 
+    reference : https://js.langchain.com/docs/integrations/text_embedding/
+
+
+Text Spliter is Ok
+
+Manage State :
+    use state management in the code to prevent the data loss , 
+    and instead of getting out
+
+for extractInformation(userInput, intent, step)  try to get useInput as the form of object from the model to prevent data loss 
+
+

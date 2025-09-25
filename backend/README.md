@@ -65,3 +65,19 @@ npm run start
 ```
 
 Call your Twilio phone number. After connection, you should be able to converse with the AI-powered AI Assistant, integrated over ConversationRelay with Twilio Voice!
+
+
+### TODOS 
+- Try with different embedding model 
+- Use different-different retriever like Retriver : 
+    Explore the various type of retriver try to campare the result and choose the best one . you used the similarity retriever that is simple 
+    try with different retriver to get better result . try with this MMR (Max Marginal Relevance) Retriever , MultiQueryRetriever
+    reference : https://js.langchain.com/docs/integrations/retrievers/
+
+
+- Instead of using File Loading Manually , use the dynamic document loader . like Document Loader
+    use the MultiFileLoader  for load the different files in the Data : 
+    reference : https://js.langchain.com/docs/integrations/document_loaders/file_loaders/multi_file/
+
+- extractInformation function try to use the llm to get the proper input from the message  . instead of hardcoding it .
+- If it is Possible to convert that llm code into Langgraph then do it . because it provide the state management , data persistent and create the advance Ai agent features and more ...
